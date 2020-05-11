@@ -64,10 +64,7 @@ public class PatliteCli {
 					pt.setLight(arguments.color, arguments.state);
 				}
 			});
-			System.exit(0);
-		}
-
-		if (arguments.tower != null && !arguments.tower.isEmpty()) {
+		} else if (arguments.tower != null && !arguments.tower.isEmpty()) {
 			withPatliteTower(new Call() {
 				@Override
 				public void apply(PatliteTower pt) throws IOException {
@@ -80,7 +77,23 @@ public class PatliteCli {
 					);
 				}
 			});
-			System.exit(0);
+		}
+
+		if (arguments.buzzerState != null && arguments.buzzerPitch1 == null && arguments.buzzerPitch2 == null) {
+			withPatliteTower(new Call() {
+				@Override
+				public void apply(PatliteTower pt) throws IOException {
+					pt.setBuzzer(arguments.buzzerState, arguments.buzzerLimit);
+				}
+			});
+		} else if (arguments.buzzerState != null && arguments.buzzerPitch1 != null && arguments.buzzerPitch2 != null) {
+			withPatliteTower(new Call() {
+				@Override
+				public void apply(PatliteTower pt) throws IOException {
+					pt.setBuzzer(arguments.buzzerState, arguments.buzzerLimit, arguments.buzzerPitch1,
+							arguments.buzzerPitch2);
+				}
+			});
 		}
 
 		System.exit(0);

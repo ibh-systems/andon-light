@@ -1,12 +1,33 @@
 package com.ibhsystems.patlite.tower.usb;
 
-public enum BuzzerState {
-//	byte OFF_STATIC = 0;
-//	byte ON_STATIC = 1;
-//	byte PATT_MOVE1 = 2;
-//	byte PATT_MOVE2 = 3;
-//	byte PATT_MOVE3 = 4;
-//	byte PATT_MOVE4 = 5;
-//	byte PATT_KEEP = 9;
+import com.ibhsystems.patlite.tower.usb.lib.USB_PAT_Tower;
 
+public enum BuzzerState {
+
+	OFF(USB_PAT_Tower.OFF_STATIC), //
+	ON(USB_PAT_Tower.ON_STATIC), //
+
+	NORMAL(USB_PAT_Tower.PATT_MOVE1), //
+	SLOW(USB_PAT_Tower.PATT_MOVE2), //
+	DOUBLE(USB_PAT_Tower.PATT_MOVE3), //
+	FAST(USB_PAT_Tower.PATT_MOVE4), //
+
+	KEEP_EXISTING(USB_PAT_Tower.PATT_KEEP); //
+
+	private byte state;
+
+	BuzzerState(byte state) {
+		this.state = state;
+	}
+
+	byte asByte() {
+		return state;
+	}
+
+	static byte asByteSafe(BuzzerState state) {
+		if (state == null) {
+			return KEEP_EXISTING.asByte();
+		}
+		return state.asByte();
+	}
 }

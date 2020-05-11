@@ -1,21 +1,40 @@
 package com.ibhsystems.patlite.tower.usb;
 
+import com.ibhsystems.patlite.tower.usb.lib.USB_PAT_Tower;
+
 public enum BuzzerPitch {
 
-//	byte BUZ_PITCH_OFF = 20;
-//	byte BUZ_PITCH1 = 21;
-//	byte BUZ_PITCH2 = 22;
-//	byte BUZ_PITCH3 = 23;
-//	byte BUZ_PITCH4 = 24;
-//	byte BUZ_PITCH5 = 25;
-//	byte BUZ_PITCH6 = 26;
-//	byte BUZ_PITCH7 = 27;
-//	byte BUZ_PITCH8 = 28;
-//	byte BUZ_PITCH9 = 29;
-//	byte BUZ_PITCH10 = 30;
-//	byte BUZ_PITCH11 = 31;
-//	byte BUZ_PITCH12 = 32;
-//	byte BUZ_PITCH13 = 33;
-//	byte BUZ_PITCH_DFLT = 59;
+	OFF(USB_PAT_Tower.BUZ_PITCH_OFF), //
+	DEFAULT(USB_PAT_Tower.BUZ_PITCH_DFLT), //
 
+	PITCH1(USB_PAT_Tower.BUZ_PITCH1), //
+	PITCH2(USB_PAT_Tower.BUZ_PITCH2), //
+	PITCH3(USB_PAT_Tower.BUZ_PITCH3), //
+	PITCH4(USB_PAT_Tower.BUZ_PITCH4), //
+	PITCH5(USB_PAT_Tower.BUZ_PITCH5), //
+	PITCH6(USB_PAT_Tower.BUZ_PITCH6), //
+	PITCH7(USB_PAT_Tower.BUZ_PITCH7), //
+	PITCH8(USB_PAT_Tower.BUZ_PITCH8), //
+	PITCH9(USB_PAT_Tower.BUZ_PITCH9), //
+	PITCH10(USB_PAT_Tower.BUZ_PITCH10), //
+	PITCH11(USB_PAT_Tower.BUZ_PITCH11), //
+	PITCH12(USB_PAT_Tower.BUZ_PITCH12), //
+	PITCH13(USB_PAT_Tower.BUZ_PITCH13); //
+
+	private byte pitch;
+
+	BuzzerPitch(byte pitch) {
+		this.pitch = pitch;
+	}
+
+	byte asByte() {
+		return pitch;
+	}
+
+	static byte asByteSafe(BuzzerPitch state) {
+		if (state == null) {
+			return DEFAULT.asByte();
+		}
+		return state.asByte();
+	}
 }

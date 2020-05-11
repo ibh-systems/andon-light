@@ -50,6 +50,17 @@ public class PatliteTower implements Closeable {
 		);
 	}
 
+	public void setBuzzer(BuzzerState state, boolean limit) throws IOException {
+		checkIfClosed();
+		checkError(USB_PAT_Tower.INSTANCE.UPT_SetBuz(BuzzerState.asByteSafe(state), (byte) (limit ? 1 : 0)));
+	}
+
+	public void setBuzzer(BuzzerState state, boolean limit, BuzzerPitch pitch1, BuzzerPitch pitch2) throws IOException {
+		checkIfClosed();
+		checkError(USB_PAT_Tower.INSTANCE.UPT_SetBuzEx(BuzzerState.asByteSafe(state), (byte) (limit ? 1 : 0),
+				BuzzerPitch.asByteSafe(pitch1), BuzzerPitch.asByteSafe(pitch2)));
+	}
+
 	private void checkIfClosed() {
 		if (closed) {
 			throw new IllegalStateException("Instance already closed!");
