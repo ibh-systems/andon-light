@@ -2,6 +2,9 @@ package com.ibhsystems.patlite.tower.usb;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
 
 import com.ibhsystems.patlite.tower.usb.lib.USB_PAT_Tower;
 
@@ -77,6 +80,19 @@ public class PatliteTower implements Closeable {
 
 	public static Version getDllVersion() {
 		return new Version(USB_PAT_Tower.INSTANCE.UPT_GetDllVer());
+	}
+
+	public static String getVersion() throws IOException {
+		InputStream manifestStream = PatliteTower.class.getClassLoader().getResourceAsStream("META-INF/MANIFEST.MF");
+		if (manifestStream != null) {
+			Manifest manifest = new Manifest(manifestStream);
+			Attributes attributes = manifest.getMainAttributes();
+			String version = attributes.getValue("versionName");
+			if (version != null) {
+				return version;
+			}
+		}
+		return "<Undefined Version>";
 	}
 
 }

@@ -6,23 +6,22 @@ import java.util.List;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 
-public class PatliteCli {
+public class PatliteTowerCli {
 
 	public static void main(String[] args) throws IOException, InterruptedException {
-
-		final PatliteArguments arguments = new PatliteArguments();
+		final PatliteTowerArguments arguments = new PatliteTowerArguments();
 		CmdLineParser parser = new CmdLineParser(arguments);
 		try {
 			parser.parseArgument(args);
 		} catch (CmdLineException e) {
 			System.err.println(e.getMessage());
-			System.err.println("java -jar patlitetower-usb-full.jar [options...] arguments...");
+			System.err.println("java -jar patlitetower-usb-full.jar [options...]");
 			parser.printUsage(System.err);
 			System.exit(1);
 		}
 
 		if (arguments.printVersion) {
-			System.out.println("print version");
+			System.out.println(PatliteTower.getVersion());
 			System.exit(0);
 		}
 
@@ -57,6 +56,7 @@ public class PatliteCli {
 			System.exit(0);
 		}
 
+		boolean handled = false;
 		if (arguments.setLight) {
 			withPatliteTower(new Call() {
 				@Override
@@ -64,6 +64,7 @@ public class PatliteCli {
 					pt.setLight(arguments.color, arguments.state);
 				}
 			});
+			handled = true;
 		} else if (arguments.tower != null && !arguments.tower.isEmpty()) {
 			withPatliteTower(new Call() {
 				@Override
@@ -77,6 +78,7 @@ public class PatliteCli {
 					);
 				}
 			});
+			handled = true;
 		}
 
 		if (arguments.buzzerState != null && arguments.buzzerPitch1 == null && arguments.buzzerPitch2 == null) {
@@ -86,6 +88,7 @@ public class PatliteCli {
 					pt.setBuzzer(arguments.buzzerState, arguments.buzzerLimit);
 				}
 			});
+			handled = true;
 		} else if (arguments.buzzerState != null && arguments.buzzerPitch1 != null && arguments.buzzerPitch2 != null) {
 			withPatliteTower(new Call() {
 				@Override
@@ -94,6 +97,12 @@ public class PatliteCli {
 							arguments.buzzerPitch2);
 				}
 			});
+			handled = true;
+		}
+
+		if (!handled) {
+			parser.printUsage(System.err);
+			System.exit(1);
 		}
 
 		System.exit(0);

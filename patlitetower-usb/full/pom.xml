@@ -26,14 +26,44 @@
 							<transformers>
 								<transformer
 									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>com.ibhsystems.patlite.tower.usb.internal.Application</mainClass>
+									<mainClass>com.ibhsystems.patlite.tower.usb.PatliteTowerCli</mainClass>
+									<manifestEntries>
+										<X-Compile-Source-JDK>${maven.compiler.source}</X-Compile-Source-JDK>
+										<X-Compile-Target-JDK>${maven.compiler.target}</X-Compile-Target-JDK>
+										<versionName>${project.version}</versionName>
+									</manifestEntries>
 								</transformer>
 							</transformers>
 							<filters>
 								<filter>
-									<artifact>net.java.dev.jna:jna</artifact>
+									<artifact>*:*</artifact>
 									<excludes>
-										<exclude>com/sun/jna/*</exclude>
+										<exclude>META-INF/MANIFEST.MF</exclude>
+										<exclude>META-INF/*.SF</exclude>
+										<exclude>META-INF/*.DSA</exclude>
+										<exclude>META-INF/*.RSA</exclude>
+
+										<exclude>com/sun/jna/aix-ppc/**</exclude>
+										<exclude>com/sun/jna/aix-ppc64/**</exclude>
+										<exclude>com/sun/jna/darwin/**</exclude>
+										<exclude>com/sun/jna/darwin/**</exclude>
+										<exclude>com/sun/jna/freebsd-x86/**</exclude>
+										<exclude>com/sun/jna/freebsd-x86-64/**</exclude>
+										<exclude>com/sun/jna/linux-aarch64/**</exclude>
+										<exclude>com/sun/jna/linux-arm/**</exclude>
+										<exclude>com/sun/jna/linux-armel/**</exclude>
+										<exclude>com/sun/jna/linux-mips64el/**</exclude>
+										<exclude>com/sun/jna/linux-ppc/**</exclude>
+										<exclude>com/sun/jna/linux-ppc64le/**</exclude>
+										<exclude>com/sun/jna/linux-s390x/**</exclude>
+										<exclude>com/sun/jna/linux-x86/**</exclude>
+										<exclude>com/sun/jna/linux-x86-64/**</exclude>
+										<exclude>com/sun/jna/openbsd-x86/**</exclude>
+										<exclude>com/sun/jna/openbsd-x86-64/**</exclude>
+										<exclude>com/sun/jna/sunos-sparc/**</exclude>
+										<exclude>com/sun/jna/sunos-sparcv9/**</exclude>
+										<exclude>com/sun/jna/sunos-x86/**</exclude>
+										<exclude>com/sun/jna/sunos-x86-64/**</exclude>
 									</excludes>
 								</filter>
 							</filters>
@@ -41,8 +71,15 @@
 					</execution>
 				</executions>
 			</plugin>
-
 		</plugins>
 	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>patlitetower-usb-cli</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
 
 </project>
