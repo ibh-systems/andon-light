@@ -1,0 +1,85 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.ibhsystems.patlite</groupId>
+		<artifactId>patlitetower-usb-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>patlitetower-usb-lib</artifactId>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>download-files</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target name="default">
+								<mkdir dir="${project.build.directory}/dlls/unzipped64" />
+								<mkdir dir="${project.build.directory}/dlls/unzipped32" />
+								<mkdir dir="${project.basedir}/native/win32-x86-64" />
+								<mkdir dir="${project.basedir}/native/win32-x86" />
+
+								<get src="${patlite.download.url.64bit}"
+									dest="${project.build.directory}/dlls/patlite64.zip"
+									verbose="false" skipexisting="true" />
+								<get src="${patlite.download.url.32bit}"
+									dest="${project.build.directory}/dlls/patlite32.zip"
+									verbose="false" skipexisting="true" />
+
+								<unzip src="${project.build.directory}/dlls/patlite64.zip"
+									dest="${project.build.directory}/dlls/unzipped64/" />
+								<unzip src="${project.build.directory}/dlls/patlite32.zip"
+									dest="${project.build.directory}/dlls/unzipped32/" />
+
+								<copy todir="${project.basedir}/native/win32-x86-64">
+									<fileset
+										dir="${project.build.directory}/dlls/unzipped64/x64" />
+								</copy>
+								<copy todir="${project.basedir}/native/win32-x86">
+									<fileset
+										dir="${project.build.directory}/dlls/unzipped32/x86" />
+								</copy>
+							</target>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>add-native</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>${project.basedir}/native</source>
+							</sources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>net.java.dev.jna</groupId>
+			<artifactId>jna</artifactId>
+		</dependency>
+	</dependencies>
+
+</project>
