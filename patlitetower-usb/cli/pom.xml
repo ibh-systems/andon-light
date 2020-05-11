@@ -13,13 +13,6 @@
 
 	<build>
 		<plugins>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
 
@@ -28,6 +21,10 @@
 			<groupId>${project.groupId}</groupId>
 			<artifactId>patlitetower-usb-api</artifactId>
 			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>args4j</groupId>
+			<artifactId>args4j</artifactId>
 		</dependency>
 	</dependencies>
 </project>

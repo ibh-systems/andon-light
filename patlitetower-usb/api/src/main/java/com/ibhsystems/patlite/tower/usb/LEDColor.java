@@ -6,13 +6,13 @@ import com.ibhsystems.patlite.tower.usb.lib.USB_PAT_Tower;
 
 public enum LEDColor {
 
-	Undefined((byte) 0, Color.BLACK), //
+	UNDEFINED((byte) 0, Color.BLACK), //
 
-	Red(USB_PAT_Tower.UPT_RED, Color.RED), //
-	Amber(USB_PAT_Tower.UPT_YEL, Color.ORANGE), //
-	Green(USB_PAT_Tower.UPT_GRN, Color.GREEN), //
-	Blue(USB_PAT_Tower.UPT_BLU, Color.BLUE), //
-	White(USB_PAT_Tower.UPT_CLR, Color.WHITE);
+	RED(USB_PAT_Tower.UPT_RED, Color.RED), //
+	AMBER(USB_PAT_Tower.UPT_YEL, Color.ORANGE), //
+	GREEN(USB_PAT_Tower.UPT_GRN, Color.GREEN), //
+	BLUE(USB_PAT_Tower.UPT_BLU, Color.BLUE), //
+	WHITE(USB_PAT_Tower.UPT_CLR, Color.WHITE);
 
 	private byte color;
 
@@ -33,14 +33,14 @@ public enum LEDColor {
 
 	public static LEDColor fromColor(Color color) {
 		if (color == null) {
-			return Undefined;
+			return UNDEFINED;
 		}
 		if (color.equals(Color.BLACK)) {
-			return Undefined;
+			return UNDEFINED;
 		}
 		Color closestColor = null;
 		for (LEDColor ledColor : LEDColor.values()) {
-			if (ledColor == Undefined) {
+			if (ledColor == UNDEFINED) {
 				continue;
 			}
 			if (closestColor == null) {
@@ -68,6 +68,6 @@ public enum LEDColor {
 				return ledColor;
 			}
 		}
-		return Undefined;
+		return UNDEFINED;
 	}
 }
