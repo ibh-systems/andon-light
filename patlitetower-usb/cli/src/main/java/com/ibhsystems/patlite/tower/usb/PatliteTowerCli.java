@@ -1,21 +1,24 @@
 package com.ibhsystems.patlite.tower.usb;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
+import org.kohsuke.args4j.ParserProperties;
 
 public class PatliteTowerCli {
 
 	public static void main(String[] args) throws IOException, InterruptedException {
 		final PatliteTowerArguments arguments = new PatliteTowerArguments();
-		CmdLineParser parser = new CmdLineParser(arguments);
+		CmdLineParser parser = new CmdLineParser(arguments,
+				ParserProperties.defaults().withShowDefaults(false).withOptionSorter(null));
 		try {
 			parser.parseArgument(args);
 		} catch (CmdLineException e) {
 			System.err.println(e.getMessage());
-			System.err.println("java -jar patlitetower-usb-full.jar [options...]");
+			System.err.println("java -jar " + getJarFile() + " [options...]");
 			parser.printUsage(System.err);
 			System.exit(1);
 		}
@@ -57,24 +60,24 @@ public class PatliteTowerCli {
 		}
 
 		boolean handled = false;
-		if (arguments.setLight) {
+		if (arguments.singleLightState != null) {
 			withPatliteTower(new Call() {
 				@Override
 				public void apply(PatliteTower pt) throws IOException {
-					pt.setLight(arguments.color, arguments.state);
+					pt.setLight(arguments.color, arguments.singleLightState);
 				}
 			});
 			handled = true;
-		} else if (arguments.tower != null && !arguments.tower.isEmpty()) {
+		} else if (arguments.allLights != null && !arguments.allLights.isEmpty()) {
 			withPatliteTower(new Call() {
 				@Override
 				public void apply(PatliteTower pt) throws IOException {
 					pt.setTower( //
-							valueAtOrNull(arguments.tower, 0), //
-							valueAtOrNull(arguments.tower, 1), //
-							valueAtOrNull(arguments.tower, 2), //
-							valueAtOrNull(arguments.tower, 3), //
-							valueAtOrNull(arguments.tower, 4) //
+							valueAtOrNull(arguments.allLights, 0), //
+							valueAtOrNull(arguments.allLights, 1), //
+							valueAtOrNull(arguments.allLights, 2), //
+							valueAtOrNull(arguments.allLights, 3), //
+							valueAtOrNull(arguments.allLights, 4) //
 					);
 				}
 			});
@@ -106,6 +109,21 @@ public class PatliteTowerCli {
 		}
 
 		System.exit(0);
+	}
+
+	private static String getJarFile() {
+		try {
+			String name = new java.io.File(
+					PatliteTowerCli.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath())
+							.getName();
+			if (name == null || name.length() == 0 || name.equalsIgnoreCase("classes")
+					|| name.equalsIgnoreCase("bin")) {
+				return "patlitetower-usb-full-<version>.jar";
+			}
+			return name;
+		} catch (URISyntaxException e) {
+			return "patlitetower-usb-full-<version>.jar";
+		}
 	}
 
 	static <R> R withPatliteTower(final Function<R> func) {

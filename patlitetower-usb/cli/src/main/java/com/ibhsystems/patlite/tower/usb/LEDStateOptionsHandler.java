@@ -15,7 +15,14 @@ public class LEDStateOptionsHandler extends OptionHandler<LEDState> {
 
 	@Override
 	public String getDefaultMetaVariable() {
-		return "RED AMBER GREEN BLUE CLEAR";
+		StringBuilder sb = new StringBuilder();
+		sb.append("[");
+		for (LEDState t : LEDState.values()) {
+			sb.append(t).append(" | ");
+		}
+		sb.delete(sb.length() - 3, sb.length());
+		sb.append("]");
+		return "RED AMBER GREEN BLUE CLEAR (each of " + sb + ")";
 	}
 
 	@Override
